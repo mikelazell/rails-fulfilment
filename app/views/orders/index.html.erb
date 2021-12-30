@@ -3,7 +3,7 @@
   <% @orders.each do |order| %>
     <li>
       <a href="/orders/<%= order.id %>">
-        <%= order.total %>
+        <%= order.name %>
       </a>
     </li>
   <% end %>

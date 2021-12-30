@@ -10,20 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_30_102448) do
+ActiveRecord::Schema.define(version: 2021_12_30_160434) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "order_statuses", force: :cascade do |t|
+  create_table "order_status_histories", force: :cascade do |t|
     t.string "name"
-    t.date "dateEntered"
-    t.date "dateComplete"
+    t.datetime "dateEntered"
+    t.datetime "dateComplete"
     t.bigint "order_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "status"
-    t.index ["order_id"], name: "index_order_statuses_on_order_id"
+    t.integer "order_status"
+    t.index ["order_id"], name: "index_order_status_histories_on_order_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -31,7 +31,10 @@ ActiveRecord::Schema.define(version: 2021_12_30_102448) do
     t.decimal "total"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "current_order_status"
+    t.string "name"
+    t.integer "source"
   end
 
-  add_foreign_key "order_statuses", "orders"
+  add_foreign_key "order_status_histories", "orders"
 end

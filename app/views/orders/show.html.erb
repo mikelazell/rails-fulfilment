@@ -1,16 +1,25 @@
-<h1><%= @order.date %></h1>
+<h1><%= @order.name %></h1>
 
-<p><%= @order.total %></p>
+<p><label>Source:</label> <%= @order.source %></p>
+<p><label>Total:</label> <%= number_to_currency(@order.total, :unit => "£", :separator => ".", :delimiter => ",") %></p>
+<p><label>Date:</label> <%= @order.date %></p>
+<p><label>Current Status:</label> <%= @order.current_order_status %></p>
 
-<h2>Statuses</h2>
+<% Order::STATUSES.each do | key, value| %>
+   <a href="/orders/<%= @order.id %>/setstatus/<%= key %>">
+      <%= key %>
+      </a>
+  <% end %>
+
+<h2>Status History</h2>
 <table>
 <tr>
 <th>Date:</th>
 <th>Name:</th>
 </tr>
-<% @order.order_statuses.each do |status| %>
+<% @order.order_status_history.each do |status| %>
   <tr>
-   <td>status.dateEntered</td>
-   <td>status.name</td>
+   <td><%= status.dateEntered %></td>
+   <td><%= status.order_status %></td>
   </tr>
 <% end %>

@@ -6,4 +6,5 @@ Rails.application.routes.draw do
   root "orders#index"
   get "/orders", to: "orders#index"  
   get "/orders/:id", to: "orders#show"
+  get "/orders/:id/setstatus/:status", to: "orders#set_status"
 end
