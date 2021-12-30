@@ -1,0 +1,16 @@
+<h1><%= @order.date %></h1>
+
+<p><%= @order.total %></p>
+
+<h2>Statuses</h2>
+<table>
+<tr>
+<th>Date:</th>
+<th>Name:</th>
+</tr>
+<% @order.order_statuses.each do |status| %>
+  <tr>
+   <td>status.dateEntered</td>
+   <td>status.name</td>
+  </tr>
+<% end %>
