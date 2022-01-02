@@ -7,7 +7,7 @@ terraform {
   }
 
   required_version = ">= 0.14.9"
-  
+
   backend "s3" {
     bucket         = "s3-tfstate-core-euwest2"
     key            = "terraform.tfstate"
@@ -15,7 +15,7 @@ terraform {
     dynamodb_table = "core-terraform-state"
     encrypt        = true
   }
-  
+
 }
 
 provider "aws" {
