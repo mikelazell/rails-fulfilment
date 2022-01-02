@@ -1,0 +1,50 @@
+<h2><%= @order.name %></h2>
+<div class="row">
+  <div class="column">
+      <label>Source:</label> <%= @order.source %>
+  </div>
+</div>
+<div class="row">
+  <div class="column">
+      <label>Total:</label> <%= number_to_currency(@order.total, :unit => "£", :separator => ".", :delimiter => ",") %>
+  </div>
+</div>
+<div class="row">
+  <div class="column">
+      <label>Date:</label> <%= @order.date %>
+  </div>
+</div>
+<div class="row">
+  <div class="column">
+      <label>Current Status:</label> <%= @order.current_order_status %>
+  </div>
+</div>
+
+<%= @order.next_status %>
+
+<% Order::STATUSES.each do | key, value| %>
+   <a href="/orders/<%= @order.id %>/setstatus/<%= key %>">
+      <%= key %>
+      </a>
+  <% end %>
+
+
+<h2>Status History</h2>
+<table class="table table-striped table-hover">
+<thead>
+<tr>
+<th scope="col"></th>
+<th scope="col">Date Entered:</th>
+<th scope="col">Date Completed:</th>
+</tr>
+<thead>
+<tbody>
+<% @order.order_status_history.each do |status| %>
+  <tr>
+   <td><%= status.order_status %></td>
+   <td><%= status.dateEntered %></td>
+   <td><%= status.dateComplete %></td>
+  </tr>
+<% end %>
+<tbody>
+</table>

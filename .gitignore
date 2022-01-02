@@ -8,26 +8,26 @@
 /.bundle
 
 # Ignore all logfiles and tempfiles.
-/log/*
-/tmp/*
-!/log/.keep
-!/tmp/.keep
+/src/log/*
+/src/tmp/*
+!/src/log/.keep
+!/src/tmp/.keep
 
 # Ignore pidfiles, but keep the directory.
-/tmp/pids/*
-!/tmp/pids/
-!/tmp/pids/.keep
+/src/tmp/pids/*
+!/src/tmp/pids/
+!/src/tmp/pids/.keep
 
 # Ignore uploaded files in development.
-/storage/*
-!/storage/.keep
-/tmp/storage/*
-!/tmp/storage/
-!/tmp/storage/.keep
+/src/storage/*
+!/src/storage/.keep
+/src/tmp/storage/*
+!/src/tmp/storage/
+!/src/tmp/storage/.keep
 
 /public/assets
 
 # Ignore master key for decrypting credentials and more.
-/config/master.key
+/src/config/master.key
 
-/node_modules/*
+/src/node_modules/*
