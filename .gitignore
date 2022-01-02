@@ -31,3 +31,12 @@
 /src/config/master.key
 
 /src/node_modules/*
+
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# .tfvars files
+*.tfvars
