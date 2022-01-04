@@ -5,32 +5,32 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 # Ignore bundler config.
-/.bundle
+**/.bundle
 
 # Ignore all logfiles and tempfiles.
-/src/log/*
-/src/tmp/*
-!/src/log/.keep
-!/src/tmp/.keep
+**/log/*
+**/tmp/*
+!/log/.keep
+!/tmp/.keep
 
 # Ignore pidfiles, but keep the directory.
-/src/tmp/pids/*
-!/src/tmp/pids/
-!/src/tmp/pids/.keep
+**/tmp/pids/*
+!/tmp/pids/
+!/tmp/pids/.keep
 
 # Ignore uploaded files in development.
-/src/storage/*
-!/src/storage/.keep
-/src/tmp/storage/*
-!/src/tmp/storage/
-!/src/tmp/storage/.keep
+**/storage/*
+!/storage/.keep
+**/tmp/storage/*
+!/tmp/storage/
+!/tmp/storage/.keep
 
-/public/assets
+**/public/assets
 
 # Ignore master key for decrypting credentials and more.
-/src/config/master.key
+**/config/master.key
 
-/src/node_modules/*
+**/node_modules/*
 
 **/.terraform/*
 
