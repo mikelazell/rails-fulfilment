@@ -1,11 +1,66 @@
-variable "tf_state_s3_bucket_name" {
-  description = "Name of the s3 bucket for TF state storage"
+variable "environment_name" {
+  description = "Name of the environment"
   type        = string
-  default     = "s3-tfstate-core-euwest2"
+  default     = "production"
 }
 
-variable "tf_state_dynamo_db_table_name" {
-  description = "Name of the dynamodb table for TF state storage"
+variable "db_subnet_name" {
+  description = "Name of the postgres DB subnet"
   type        = string
-  default     = "core-terraform-state"
+  default     = "dbsn-fulfilment-prod-euwest2"
+}
+
+variable "security_group_name" {
+  description = "Name of the security group that ties elastic beanstalk and RDS together"
+  type        = string
+  default     = "sgfulfilment-prod-euwest2"
+}
+
+variable "database_name" {
+  description = "Name of the database the rails app uses"
+  type        = string
+  default     = env.db_name
+  #cannot use default naming strategy above due to AWS DB naming rules (no hyphens)
+}
+
+variable "db_size" {
+  description = "The size of the rails DB"
+  type        = string
+  default     = "db.t2.micro"
+}
+
+variable "db_user" {
+  description = "The username of the rails DB"
+  type        = string
+  default     = env.db_user
+}
+
+variable "db_password" {
+  description = "The password of the rails DB"
+  type        = string
+  default     = env.db_password
+}
+
+variable "db_availability_zone" {
+  description = "The default availability zone of rails DB"
+  type        = string
+  default     = "eu-west-2a"
+}
+
+variable "rails_app_name" {
+  description = "The name of the app rails app"
+  type        = string
+  default     = env.rails_app_name
+}
+
+variable "rails_app_eb_stack" {
+  description = "The name of stack to run on elastic beanstalk"
+  type        = string
+  default     = "64bit Amazon Linux 2 v3.4.1 running Ruby 3.0"
+}
+
+variable "rails_app_secret_key_base" {
+  description = "The secret_key_base_to_use_on_rails"
+  type        = string
+  default     = env.secret_key_base
 }
