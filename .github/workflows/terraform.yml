@@ -60,16 +60,19 @@ jobs:
         TF_VAR_rails_app_name: ${{ secrets.RAILS_APP_NAME }}
         TF_VAR_rails_app_secret_key_base: ${{ secrets.RAILS_APP_SECRET_KEY_BASE }}
       run: terraform apply -auto-approve
+    
+    - name: Get Time
+      id: time
+      uses: nanzm/get-time-action@v1.1
+      with:
+        timeZone: 0
+        format: 'YYYYMMDDHHmmss'
       
     - name: Generate deployment package
-        run: |
+      run: |
         zip -r deploy.zip . -x '*.git*'
 
     - name: Deploy to EB
-      uses: nanzm/get-time-action@v1.1
-        with:
-          timeZone: 0
-          format: 'YYYYMMDDHHmmss'
       uses: einaregilsson/beanstalk-deploy@v11
       with:
         aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
