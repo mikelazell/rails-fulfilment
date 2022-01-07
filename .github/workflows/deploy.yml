@@ -25,18 +25,19 @@ on:
         required: true
       RAILS_APP_SECRET_KEY_BASE:
         required: true
-   
-name: Generate deployment package
-  run: |
-   zip -r ${{ inputs.VERSION }}.zip . -x '*.git*'
 
-- name: Deploy to EB
-  uses: einaregilsson/beanstalk-deploy@v11
-  with:
-    aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    application_name: ${{ secrets.RAILS_APP_NAME }}
-    environment_name: ${{ inputs.ENVIRONMENT_NAME }}
-    version_label: ${{ inputs.VERSION }}
-    region: ${{ inputs.REGION }}
-    deployment_package: ${{ inputs.VERSION }}.zip
+jobs:
+  generate:
+    name: 'Deploy'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy to EB
+      uses: einaregilsson/beanstalk-deploy@v11
+      with:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        application_name: ${{ secrets.RAILS_APP_NAME }}
+        environment_name: ${{ inputs.ENVIRONMENT_NAME }}
+        version_label: ${{ inputs.VERSION }}
+        region: ${{ inputs.REGION }}
+        deployment_package: ${{ inputs.VERSION }}.zip
