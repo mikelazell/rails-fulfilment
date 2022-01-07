@@ -1,5 +1,10 @@
-name: CI
-on: [push, pull_request]
+name: Test
+on:
+  #This will run on PR creation and then when called explicitly (as a reusable workflow)
+  pull_request:
+    branches: [ master ]
+  workflow_call:
+
 jobs:
   test:
     runs-on: ubuntu-latest
