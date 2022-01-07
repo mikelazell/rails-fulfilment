@@ -19,7 +19,7 @@ variable "security_group_name" {
 variable "database_name" {
   description = "Name of the database the rails app uses"
   type        = string
-  default     = env.db_name
+  default     = "tfdatabasename"
   #cannot use default naming strategy above due to AWS DB naming rules (no hyphens)
 }
 
@@ -32,13 +32,13 @@ variable "db_size" {
 variable "db_user" {
   description = "The username of the rails DB"
   type        = string
-  default     = env.db_user
+  default     = "DBUSER"
 }
 
 variable "db_password" {
   description = "The password of the rails DB"
   type        = string
-  default     = env.db_password
+  default     = "DBPASSWORD"
 }
 
 variable "db_availability_zone" {
@@ -50,7 +50,7 @@ variable "db_availability_zone" {
 variable "rails_app_name" {
   description = "The name of the app rails app"
   type        = string
-  default     = env.rails_app_name
+  default     = "RAILSAPPNAME"
 }
 
 variable "rails_app_eb_stack" {
@@ -62,5 +62,5 @@ variable "rails_app_eb_stack" {
 variable "rails_app_secret_key_base" {
   description = "The secret_key_base_to_use_on_rails"
   type        = string
-  default     = env.secret_key_base
+  default     = "SECRETKEYBASE"
 }
