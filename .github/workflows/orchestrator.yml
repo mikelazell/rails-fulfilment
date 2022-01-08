@@ -16,10 +16,6 @@ jobs:
       with:
         timeZone: 0
         format: 'YYYYMMDDHHmmss'
-      
-    - name: Generate deployment package
-      run: |
-        zip -r deploy.zip . -x '*.git*'
         
   Test:
     name: Run Tests
