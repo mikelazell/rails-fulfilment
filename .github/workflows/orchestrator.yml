@@ -5,21 +5,9 @@ on:
     branches: [ master ]
 
 jobs:
-  GenerateVersion:
-    runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.time.outputs.time }}
-    steps:
-    - name: Get Time
-      id: time
-      uses: nanzm/get-time-action@v1.1
-      with:
-        timeZone: 0
-        format: 'YYYYMMDDHHmmss'
         
   Test:
     name: Run Tests
-    needs: [GenerateVersion]
     uses: mikelazell/rails-fulfilment/.github/workflows/test.yml@master
 
   DeployTest:
@@ -29,7 +17,6 @@ jobs:
     with:
       ENVIRONMENT_NAME: "test"
       REGION: "eu-west-2"
-      VERSION: "abcdefgh"
     secrets:
       AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
@@ -46,7 +33,6 @@ jobs:
     with:
       ENVIRONMENT_NAME: "production"
       REGION: "eu-west-2"
-      VERSION: "1234"
     secrets:
       AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
