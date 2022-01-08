@@ -1,19 +1,25 @@
 variable "environment_name" {
   description = "Name of the environment"
   type        = string
-  default     = "production"
+  default     = "development"
 }
 
 variable "db_subnet_name" {
   description = "Name of the postgres DB subnet"
   type        = string
-  default     = "dbsn-fulfilment-prod-euwest2"
+  default     = "dbsn-fulfilment-dev-euwest2"
 }
 
 variable "security_group_name" {
   description = "Name of the security group that ties elastic beanstalk and RDS together"
   type        = string
-  default     = "sgfulfilment-prod-euwest2"
+  default     = "sgfulfilment-dev-euwest2"
+}
+
+variable "vpc_name" {
+  description = "Name of the VPC used for fulfilment app"
+  type        = string
+  default     = "vpc-fulfilment-dev-euwest2"
 }
 
 variable "database_name" {
@@ -32,7 +38,7 @@ variable "db_size" {
 variable "db_user" {
   description = "The username of the rails DB"
   type        = string
-  default     = "DBUSER"
+  default     = "fulfilmentuser"
 }
 
 variable "db_password" {
@@ -50,7 +56,7 @@ variable "db_availability_zone" {
 variable "rails_app_name" {
   description = "The name of the app rails app"
   type        = string
-  default     = "RAILSAPPNAME"
+  default     = "eb-fulfilment-dev-euwest2"
 }
 
 variable "rails_app_eb_stack" {
