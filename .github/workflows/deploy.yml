@@ -109,9 +109,11 @@ jobs:
     environment: ${{ inputs.ENVIRONMENT_NAME }}
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout
+      uses: actions/checkout@v2
     - name: Generate deployment package
       run: |
-        zip -r deploy.zip . -x '*.git*'
+        zip -r ${{ inputs.VERSION }}.zip . -x '*.git*'
     - name: Deploy to EB
       uses: einaregilsson/beanstalk-deploy@v11
       with:
@@ -121,4 +123,4 @@ jobs:
         environment_name: ${{ inputs.ENVIRONMENT_NAME }}
         version_label: ${{ inputs.VERSION }}
         region: ${{ inputs.REGION }}
-        deployment_package: deploy.zip
+        deployment_package: ${{ inputs.VERSION }}.zip
