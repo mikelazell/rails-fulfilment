@@ -36,7 +36,7 @@ jobs:
       DATABASE_NAME: ${{secrets.DATABASE_NAME}}
       DATABASE_USER: ${{secrets.DATABASE_USER}}
       DATABASE_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
-      RAILS_APP_NAME: ${{secrets.RAILS_APP_NAME}}
+      RAILS_APP_NAME: "eb-fulfilment-test-euwest2"
       RAILS_APP_SECRET_KEY_BASE: ${{secrets.RAILS_APP_SECRET_KEY_BASE}}
 
   DeployProd:
