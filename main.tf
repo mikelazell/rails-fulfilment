@@ -112,7 +112,7 @@ resource "aws_elastic_beanstalk_application" "tfrailsapp" {
   name = var.rails_app_name
 
   tags = {
-    Terraform = "true"
+    Terraform   = "true"
     Environment = var.environment_name
   }
 }
