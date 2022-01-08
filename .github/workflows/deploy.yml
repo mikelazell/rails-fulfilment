@@ -102,7 +102,7 @@ jobs:
         TF_VAR_rails_app_secret_key_base: ${{ secrets.RAILS_APP_SECRET_KEY_BASE }}
         TF_VAR_rails_app_eb_stack: "64bit Amazon Linux 2 v3.4.1 running Ruby 3.0"
       run: terraform apply -auto-approve
-
+      
   Deploy:
     name: 'Deploy'
     needs: [Terraform]
@@ -111,7 +111,7 @@ jobs:
     steps:
     - name: Generate deployment package
       run: |
-        zip -r ${{ inputs.VERSION }}.zip . -x '*.git*'
+        zip -r deploy.zip . -x '*.git*'
     - name: Deploy to EB
       uses: einaregilsson/beanstalk-deploy@v11
       with:
@@ -121,4 +121,4 @@ jobs:
         environment_name: ${{ inputs.ENVIRONMENT_NAME }}
         version_label: ${{ inputs.VERSION }}
         region: ${{ inputs.REGION }}
-        deployment_package: ${{ inputs.VERSION }}.zip
+        deployment_package: deploy.zip
