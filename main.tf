@@ -52,7 +52,7 @@ module "vpc" {
 
 resource "aws_security_group" "app_db_security_group" {
   name        = var.security_group_name
-  description = "test"
+  description = var.security_group_name
   vpc_id      = module.vpc.vpc_id
 
   ingress {
@@ -113,6 +113,7 @@ resource "aws_elastic_beanstalk_application" "tfrailsapp" {
 
   tags = {
     Terraform = "true"
+    Environment = var.environment_name
   }
 }
 
@@ -150,15 +151,6 @@ resource "aws_elastic_beanstalk_environment" "beanstalkappenv" {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "SecurityGroups"
     value     = aws_security_group.app_db_security_group.id
-  }
-
-  #Adding setting below as AWS adds an automated security group which we dont want but cant override the behaviour..
-  #https://github.com/hashicorp/terraform-provider-aws/issues/2002#issuecomment-477850793
-  #locking it down instead
-  setting {
-    namespace = "aws:autoscaling:launchconfiguration"
-    name      = "SSHSourceRestriction"
-    value     = "tcp,80,80,127.0.0.1/32"
   }
 
   setting {
