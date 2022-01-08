@@ -85,9 +85,13 @@ jobs:
 
   Deploy:
     name: 'Deploy'
+    needs: [Terraform]
     environment: ${{ inputs.ENVIRONMENT_NAME }}
     runs-on: ubuntu-latest
     steps:
+    - name: Generate deployment package
+      run: |
+        zip -r ${{ inputs.VERSION }}.zip . -x '*.git*'
     - name: Deploy to EB
       uses: einaregilsson/beanstalk-deploy@v11
       with:
