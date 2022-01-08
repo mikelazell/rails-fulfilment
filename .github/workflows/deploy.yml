@@ -115,7 +115,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
-    - name: Generation Version
+    - name: Generate Version
       uses: paulhatch/semantic-version@v4.0.2
       id: version
       with:
@@ -140,7 +140,7 @@ jobs:
         bump_each_commit: true
     - name: Generate deployment package
       run: |
-        zip -r ${{ steps.version.major }}${{ steps.version.minor }}${{ steps.version.patch }}.zip . -x '*.git*'
+        zip -r ${{ steps.version.outputs.major }}${{ steps.version.outputs.minor }}${{ steps.version.outputs.patch }}.zip . -x '*.git*'
     - name: Deploy to EB
       uses: einaregilsson/beanstalk-deploy@v11
       with:
@@ -150,4 +150,4 @@ jobs:
         environment_name: ${{ inputs.ENVIRONMENT_NAME }}
         version_label: ${{ steps.version.version }}
         region: ${{ inputs.REGION }}
-        deployment_package: ${{ steps.version.major }}${{ steps.version.minor }}${{ steps.version.patch }}.zip
+        deployment_package: ${{ steps.outputs.version.major }}${{ steps.outputs.version.minor }}${{ steps.outputs.version.patch }}.zip
