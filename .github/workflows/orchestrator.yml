@@ -5,93 +5,55 @@ on:
     branches: [ master ]
 
 jobs:
-  Test:
-    name: Run Tests
+  GenerateVersion:
     runs-on: ubuntu-latest
     steps:
-      - name: Run Tests
-        uses: mikelazell/rails-fulfilment/.github/workflows/test.yml@master
-      - name: Generate Version
-        id: version
-        uses: nanzm/get-time-action@v1.1
-        with:
-          timeZone: 0
-          format: 'YYYYMMDDHHmmss' #Todo: use canonical version here
+    - name: Get Time
+      id: time
+      uses: nanzm/get-time-action@v1.1
+      with:
+        timeZone: 0
+        format: 'YYYYMMDDHHmmss'
+      
+    - name: Generate deployment package
+      run: |
+        zip -r deploy.zip . -x '*.git*'
+        
+  Test:
+    name: Run Tests
+    needs: [GenerateVersion]
+    uses: mikelazell/rails-fulfilment/.github/workflows/test.yml@master
 
   DeployTest:
     name: Deploy to Test 
-    if: github.event.ref == 'refs/heads/master'
     needs: [Test]
-    runs-on: ubuntu-latest
-    environment: 
-      name: Test
-      # url: 'http://test.myapp.com'
-    steps:
-      - name: Create Infrastructure
-        uses: mikelazell/rails-fulfilment/.github/workflows/iac.yml@master
-        with:
-          ENVIRONMENT_NAME: "test"
-          VERSION: ${{ steps.version.outputs.time }}
-          REGION: "eu-west-2"
-        secrets:
-          AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
-          AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-          DATABASE_NAME: ${{secrets.DATABASE_NAME}}
-          DATABASE_USER: ${{secrets.DATABASE_USER}}
-          DATABASE_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
-          RAILS_APP_NAME: ${{secrets.RAILS_APP_NAME}}
-          RAILS_APP_SECRET_KEY_BASE: ${{secrets.RAILS_APP_SECRET_KEY_BASE}}
+    uses: mikelazell/rails-fulfilment/.github/workflows/deploy.yml@master
+    with:
+      ENVIRONMENT_NAME: "test"
+      REGION: "eu-west-2"
+      VERSION: ${{ steps.time.outputs.time }}
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+      AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+      DATABASE_NAME: ${{secrets.DATABASE_NAME}}
+      DATABASE_USER: ${{secrets.DATABASE_USER}}
+      DATABASE_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
+      RAILS_APP_NAME: ${{secrets.RAILS_APP_NAME}}
+      RAILS_APP_SECRET_KEY_BASE: ${{secrets.RAILS_APP_SECRET_KEY_BASE}}
 
-      - name: Deploy
-        uses: mikelazell/rails-fulfilment/.github/workflows/deploy.yml@master
-        with:
-          ENVIRONMENT_NAME: "test"
-          REGION: "eu-west-2"
-          VERSION: ${{ steps.version.outputs.time }}
-        secrets:
-          AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
-          AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-          DATABASE_NAME: ${{secrets.DATABASE_NAME}}
-          DATABASE_USER: ${{secrets.DATABASE_USER}}
-          DATABASE_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
-          RAILS_APP_NAME: ${{secrets.RAILS_APP_NAME}}
-          RAILS_APP_SECRET_KEY_BASE: ${{secrets.RAILS_APP_SECRET_KEY_BASE}}
-
-DeployProd:
-  name: Deploy to Production 
-  if: github.event.ref == 'refs/heads/master'
-  needs: [DeployTest]
-  runs-on: ubuntu-latest
-  environment: 
-    name: Test
-    # url: 'http://test.myapp.com'
-  steps:
-    - name: Create Infrastructure
-      uses: mikelazell/rails-fulfilment/.github/workflows/iac.yml@master
-      with:
-        ENVIRONMENT_NAME: "production"
-        VERSION: ${{ steps.version.outputs.time }}
-        REGION: "eu-west-2"
-      secrets:
-        AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
-        AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-        DATABASE_NAME: ${{secrets.DATABASE_NAME}}
-        DATABASE_USER: ${{secrets.DATABASE_USER}}
-        DATABASE_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
-        RAILS_APP_NAME: ${{secrets.RAILS_APP_NAME}}
-        RAILS_APP_SECRET_KEY_BASE: ${{secrets.RAILS_APP_SECRET_KEY_BASE}}
-        
-    - name: Deploy
-      uses: mikelazell/rails-fulfilment/.github/workflows/deploy.yml@master
-      with:
-        ENVIRONMENT_NAME: ${{var.ENVIRONMENT_NAME}}
-        REGION: {{var.REGION}}
-        VERSION: ${{ steps.version.outputs.time }}
-      secrets:
-        AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
-        AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-        DATABASE_NAME: ${{secrets.DATABASE_NAME}}
-        DATABASE_USER: ${{secrets.DATABASE_USER}}
-        DATABASE_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
-        RAILS_APP_NAME: ${{secrets.RAILS_APP_NAME}}
-        RAILS_APP_SECRET_KEY_BASE: ${{secrets.RAILS_APP_SECRET_KEY_BASE}}
+  DeployProd:
+    name: Deploy to Prod 
+    needs: [DeployTest]
+    uses: mikelazell/rails-fulfilment/.github/workflows/deploy.yml@master
+    with:
+      ENVIRONMENT_NAME: "production"
+      REGION: "eu-west-2"
+      VERSION: ${{ steps.time.outputs.time }}
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+      AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+      DATABASE_NAME: ${{secrets.DATABASE_NAME}}
+      DATABASE_USER: ${{secrets.DATABASE_USER}}
+      DATABASE_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
+      RAILS_APP_NAME: ${{secrets.RAILS_APP_NAME}}
+      RAILS_APP_SECRET_KEY_BASE: ${{secrets.RAILS_APP_SECRET_KEY_BASE}}
