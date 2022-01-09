@@ -3,8 +3,6 @@ name: CI + CD
 on:
   push:
     branches: [ master ]
-concurrency:
-  group: fulfilment-ci-cd
 
 jobs:
         
@@ -16,6 +14,8 @@ jobs:
     name: Deploy to Test 
     needs: [Test]
     uses: mikelazell/rails-fulfilment/.github/workflows/deploy.yml@master
+    concurrency:
+      group: fulfilment-deploy-test
     with:
       ENVIRONMENT_NAME: "test"
       REGION: "eu-west-2"
@@ -32,6 +32,8 @@ jobs:
     name: Deploy to Prod 
     needs: [DeployTest]
     uses: mikelazell/rails-fulfilment/.github/workflows/deploy.yml@master
+    concurrency:
+      group: fulfilment-deploy-prod
     with:
       ENVIRONMENT_NAME: "production"
       REGION: "eu-west-2"
