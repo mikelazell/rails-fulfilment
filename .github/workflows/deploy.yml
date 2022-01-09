@@ -172,4 +172,4 @@ jobs:
         environment_name: ${{ inputs.ENVIRONMENT_NAME }}
         version_label: ${{ steps.version.outputs.version }}
         region: ${{ inputs.REGION }}
-        deployment_package: ${{ steps.version.outputs.major }}${{ steps.version.outputs.minor }}${{ steps.version.outputs.patch }}.zip
+        deployment_package: src/${{ steps.version.outputs.major }}${{ steps.version.outputs.minor }}${{ steps.version.outputs.patch }}.zip
