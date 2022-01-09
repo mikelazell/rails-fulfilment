@@ -128,6 +128,10 @@ jobs:
     #As it depends on Terraform and that requires a review, that is sufficient
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+        working-directory: 'src'
     steps:
     - name: Checkout
       uses: actions/checkout@v2
