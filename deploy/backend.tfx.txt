@@ -51,7 +51,7 @@ resource "aws_s3_bucket" "state_bucket" {
   }
 }
 
-# Build a DynamoDB to use for terraform state locking
+# Build a DynamoDB to use for TF state locking
 resource "aws_dynamodb_table" "tf_lock_state" {
   name = var.tf_state_dynamo_db_table_name
 
