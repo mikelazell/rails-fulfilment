@@ -3,6 +3,8 @@ name: CI + CD
 on:
   push:
     branches: [ master ]
+concurrency:
+  group: fulfilment-ci-cd
 
 jobs:
         
