@@ -1,0 +1,24 @@
+name: Package
+
+on:
+  workflow_call:
+    inputs:
+      ARTIFACT_NAME:
+        required: true
+        type: string
+
+jobs:
+  Terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    - name: Generate artifact
+     uses: actions/upload-artifact@v2
+      with: 
+        name: ${{ inputs.ARTIFACT_NAME }}
+        path: src
