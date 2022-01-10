@@ -10,6 +10,34 @@ jobs:
     name: Run Tests
     uses: mikelazell/rails-fulfilment/.github/workflows/test.yml@master
 
+  GenerateVersion:
+    name: Generate Version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Generate Version
+      uses: paulhatch/semantic-version@v4.0.2
+      id: version
+      with:
+        tag_prefix: "v"
+        major_pattern: "(MAJOR)"
+        minor_pattern: "(MINOR)"
+        format: "${major}.${minor}.${patch}"
+        short_tags: false
+        bump_each_commit: true
+      outputs:
+        version: ${{ steps.version.outputs.version }}
+        artifact_name: ${{ steps.version.outputs.major }}${{ steps.version.outputs.minor }}${{ steps.version.outputs.patch }}
+
+  BuildDeploymentPackage:
+    name: Build Deployment Package
+    uses: mikelazell/rails-fulfilment/.github/workflows/package.yml@master
+    with:
+      ARTIFACT_NAME: ${{ jobs.GenerateVersion.outputs.artifact_name }}
+
   DeployTest:
     name: Deploy to Test 
     needs: [Test]
@@ -19,6 +47,8 @@ jobs:
     with:
       ENVIRONMENT_NAME: "test"
       REGION: "eu-west-2"
+      VERSION: ${{ jobs.GenerateVersion.outputs.version }}$
+      ARTIFACT_NAME: ${{ jobs.GenerateVersion.outputs.artifact_name }}
     secrets:
       AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
@@ -37,6 +67,8 @@ jobs:
     with:
       ENVIRONMENT_NAME: "production"
       REGION: "eu-west-2"
+      VERSION: ${{ jobs.GenerateVersion.outputs.version }}$
+      ARTIFACT_NAME: ${{ jobs.GenerateVersion.outputs.artifact_name }}
     secrets:
       AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}

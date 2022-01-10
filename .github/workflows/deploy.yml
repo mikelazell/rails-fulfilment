@@ -8,6 +8,10 @@ on:
         type: string
       REGION: 
         type: string
+      VERSION: 
+        type: string
+      ARTIFACT_NAME: 
+        type: string
     secrets:
       AWS_ACCESS_KEY_ID:
         required: true
@@ -30,7 +34,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.ENVIRONMENT_NAME }}
 
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
       run:
         shell: bash
@@ -122,6 +125,7 @@ jobs:
       run: terraform apply -auto-approve
       
   Deploy:
+    
     name: 'Deploy'    
     needs: [Terraform]
     #environment: ${{ inputs.ENVIRONMENT_NAME }} //Removed as it requires 2 reviews to live. 
@@ -133,36 +137,13 @@ jobs:
         shell: bash
         working-directory: 'src'
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+    - name: Download deployment artifact
+      uses: actions/download-artifact@v2
       with:
-        fetch-depth: 0
-    - name: Generate Version
-      uses: paulhatch/semantic-version@v4.0.2
-      id: version
-      with:
-        # The prefix to use to identify tags
-        tag_prefix: "v"
-        # A string which, if present in a git commit, indicates that a change represents a
-        # major (breaking) change, supports regular expressions wrapped with '/'
-        major_pattern: "(MAJOR)"
-        # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
-        minor_pattern: "(MINOR)"
-        # A string to determine the format of the version output
-        format: "${major}.${minor}.${patch}"
-        # Optional path to check for changes. If any changes are detected in the path the
-        # 'changed' output will true. Enter multiple paths separated by spaces.
-        # change_path: "src/my-service"
-        # Named version, will be used as suffix for name version tag
-        #namespace: fulfilment
-        # Indicate whether short tags like 'v1' should be supported. If false only full
-        # tags like 'v1.0.0' will be recognized.
-        short_tags: false
-        # If this is set to true, *every* commit will be treated as a new version.
-        bump_each_commit: true
-    - name: Generate deployment package
+        name: ${{ inputs.ARTIFACT_NAME }}
+     - name: Generate deployment zip
       run: |
-        zip -r ${{ steps.version.outputs.major }}${{ steps.version.outputs.minor }}${{ steps.version.outputs.patch }}.zip . -x '*.git*'
+        zip -r ${{ inputs.ARTIFACT_NAME }}.zip /${{ inputs.ARTIFACT_NAME }} -x '*.git*'
     - name: Deploy to EB
       uses: einaregilsson/beanstalk-deploy@v11
       with:
@@ -172,4 +153,4 @@ jobs:
         environment_name: ${{ inputs.ENVIRONMENT_NAME }}
         version_label: ${{ steps.version.outputs.version }}
         region: ${{ inputs.REGION }}
-        deployment_package: src/${{ steps.version.outputs.major }}${{ steps.version.outputs.minor }}${{ steps.version.outputs.patch }}.zip
+        deployment_package: ${{ inputs.ARTIFACT_NAME }}/${{ inputs.ARTIFACT_NAME }}.zip
