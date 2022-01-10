@@ -15,22 +15,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - name: Generate Version
-      uses: paulhatch/semantic-version@v4.0.2
-      id: version
-      with:
-        tag_prefix: "v"
-        major_pattern: "(MAJOR)"
-        minor_pattern: "(MINOR)"
-        format: "${major}.${minor}.${patch}"
-        short_tags: false
-        bump_each_commit: true
-      outputs:
-        version: ${{ steps.version.outputs.version }}
-        artifact_name: ${{ steps.version.outputs.major }}${{ steps.version.outputs.minor }}${{ steps.version.outputs.patch }}
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Generate Version
+        uses: paulhatch/semantic-version@v4.0.2
+        id: version
+        with:
+          tag_prefix: "v"
+          major_pattern: "(MAJOR)"
+          minor_pattern: "(MINOR)"
+          format: "${major}.${minor}.${patch}"
+          short_tags: false
+          bump_each_commit: true
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      artifact_name: ${{ steps.version.outputs.major }}${{ steps.version.outputs.minor }}${{ steps.version.outputs.patch }}
 
   BuildDeploymentPackage:
     name: Build Deployment Package
