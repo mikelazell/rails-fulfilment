@@ -12,6 +12,7 @@ jobs:
 
   GenerateVersion:
     name: Generate Version
+    needs: [Test]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -40,7 +41,7 @@ jobs:
 
   DeployTest:
     name: Deploy to Test 
-    needs: [Test]
+    needs: [GenerateVersion]
     uses: mikelazell/rails-fulfilment/.github/workflows/deploy.yml@master
     concurrency:
       group: fulfilment-deploy-test
