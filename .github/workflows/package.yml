@@ -17,6 +17,7 @@ jobs:
         shell: bash
 
     steps:
+    - uses: actions/checkout@v2
     - name: Generate artifact
       uses: actions/upload-artifact@v2
       with: 
