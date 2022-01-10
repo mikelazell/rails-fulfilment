@@ -9,7 +9,7 @@ on:
 
 jobs:
   Package:
-    name: 'Terraform'
+    name: 'Package'
     runs-on: ubuntu-latest
 
     defaults:
