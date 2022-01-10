@@ -8,7 +8,7 @@ on:
         type: string
 
 jobs:
-  Terraform:
+  Package:
     name: 'Terraform'
     runs-on: ubuntu-latest
 
