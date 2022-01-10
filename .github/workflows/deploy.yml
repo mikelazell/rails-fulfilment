@@ -141,7 +141,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: ${{ inputs.ARTIFACT_NAME }}
-        path: ${{ inputs.ARTIFACT_NAME }}
+        path: ./src/${{ inputs.ARTIFACT_NAME }}
     - name: Generate deployment zip
       run: |
         zip -r ${{ inputs.ARTIFACT_NAME }}.zip ${{ inputs.ARTIFACT_NAME }} -x '*.git*'
