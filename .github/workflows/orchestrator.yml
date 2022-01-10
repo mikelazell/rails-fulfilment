@@ -44,7 +44,7 @@ jobs:
 
   DeployTest:
     name: Deploy to Test 
-    needs: [BuildDeploymentPackage]
+    needs: [GenerateVersion, BuildDeploymentPackage]
     uses: mikelazell/rails-fulfilment/.github/workflows/deploy.yml@master
     concurrency:
       group: fulfilment-deploy-test
@@ -64,7 +64,7 @@ jobs:
 
   DeployProd:
     name: Deploy to Prod 
-    needs: [DeployTest]
+    needs: [GenerateVersion, DeployTest]
     uses: mikelazell/rails-fulfilment/.github/workflows/deploy.yml@master
     concurrency:
       group: fulfilment-deploy-prod
