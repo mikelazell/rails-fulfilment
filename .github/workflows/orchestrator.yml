@@ -35,13 +35,14 @@ jobs:
 
   BuildDeploymentPackage:
     name: Build Deployment Package
+    needs: [GenerateVersion]
     uses: mikelazell/rails-fulfilment/.github/workflows/package.yml@master
     with:
       ARTIFACT_NAME: ${{ needs.GenerateVersion.outputs.artifact_name }}
 
   DeployTest:
     name: Deploy to Test 
-    needs: [GenerateVersion]
+    needs: [BuildDeploymentPackage]
     uses: mikelazell/rails-fulfilment/.github/workflows/deploy.yml@master
     concurrency:
       group: fulfilment-deploy-test
