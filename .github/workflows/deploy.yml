@@ -151,6 +151,6 @@ jobs:
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         application_name: ${{ secrets.RAILS_APP_NAME }}
         environment_name: ${{ inputs.ENVIRONMENT_NAME }}
-        version_label: ${{ steps.version.outputs.version }}
+        version_label: ${{ inputs.VERSION }}
         region: ${{ inputs.REGION }}
         deployment_package: ${{ inputs.ARTIFACT_NAME }}/${{ inputs.ARTIFACT_NAME }}.zip
