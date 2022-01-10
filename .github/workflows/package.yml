@@ -18,7 +18,7 @@ jobs:
 
     steps:
     - name: Generate artifact
-     uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v2
       with: 
         name: ${{ inputs.ARTIFACT_NAME }}
         path: src
