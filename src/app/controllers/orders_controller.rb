@@ -19,8 +19,6 @@ class OrdersController < ApplicationController
 
     @order.order_status_history.create(order_status: params[:status], dateEntered: DateTime.now())
 
-    ##OrderStatusHistory.create(order_status: params[:status], order_id: params[:id], dateEntered: DateTime.now())
-
     redirect_back_or_to @order, notice: "Status updated to #{@order.current_order_status}"
 
   end
