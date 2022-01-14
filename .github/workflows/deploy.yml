@@ -144,7 +144,7 @@ jobs:
         path: ./src/${{ inputs.ARTIFACT_NAME }}
     - name: Generate deployment zip
       run: |
-        zip -r ${{ inputs.ARTIFACT_NAME }}.zip ${{ inputs.ARTIFACT_NAME }}/* -x '*.git*'
+        cd ${{ inputs.ARTIFACT_NAME }}; zip -r ${{ inputs.ARTIFACT_NAME }}.zip ${{ inputs.ARTIFACT_NAME }}/* -x '*.git*'
     - name: Deploy to EB
       uses: einaregilsson/beanstalk-deploy@v11
       with:
