@@ -154,5 +154,5 @@ jobs:
         environment_name: ${{ inputs.ENVIRONMENT_NAME }}
         version_label: ${{ inputs.VERSION }}
         region: ${{ inputs.REGION }}
-        deployment_package: ./src/${{ inputs.ARTIFACT_NAME }}.zip
+        deployment_package: ./src/${{ inputs.ARTIFACT_NAME }}/${{ inputs.ARTIFACT_NAME }}.zip
         use_existing_version_if_available: true
