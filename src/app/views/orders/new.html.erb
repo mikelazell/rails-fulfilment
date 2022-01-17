@@ -1,0 +1,27 @@
+<h1>New Order</h1>
+
+<%= form_with model: @order do |form| %>
+  <div>
+    <%= form.label :name %><br>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :total %><br>
+    <%= form.text_field :total %>
+  </div>
+
+  <div>
+    <%= form.label :date %><br>
+    <%= form.text_field :date %>
+  </div>
+
+  <div>
+    <%= form.label :source %><br>
+    <%= form.text_field :source %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
