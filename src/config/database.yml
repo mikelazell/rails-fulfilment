@@ -10,7 +10,7 @@ development:
 
 test:
   <<: *default
-  url: postgres://rails:rails@127.0.0.1/veeqodemo_test
+  url: <%= ENV["DATABASE_URL"] %>
 
 production:
   <<: *default
