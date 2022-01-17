@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   # root "articles#index"
   root "orders#index"
   get "/orders", to: "orders#index"  
-  get "/orders/:id", to: "orders#show"
+  get "/orders/new", to: "orders#new"
+  get "/orders/:id", to: "orders#detail"
+  post "/orders", to: "orders#create"
+
   get "/orders/:id/setstatus/:status", to: "orders#set_status"
 end

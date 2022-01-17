@@ -1,11 +1,47 @@
 class OrdersController < ApplicationController
+
+  #-------------#
+
   def index
     @orders = Order.all
   end
 
-  def show
+  #-------------#
+
+  def detail
+
     @order = Order.find(params[:id])
+
   end
+
+  #-------------#
+
+  def new
+
+    @order = Order.new
+
+  end
+
+  #-------------#
+
+  def create
+    
+    @order = Order.new(order_params)
+    @saved = @order.save
+
+    if @order.save
+
+      @orderStatus = @order.order_status_history.create(order_status: 'created', dateEntered: DateTime.now())
+      @order.current_order_status = @orderstatus;
+      @order.save
+
+      redirect_to '/orders'
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  #-------------#
 
   def set_status
     @order = Order.find(params[:id])
@@ -22,4 +58,12 @@ class OrdersController < ApplicationController
     redirect_back_or_to @order, notice: "Status updated to #{@order.current_order_status}"
 
   end
+
+  #-------------#
+
+  private
+    def order_params
+      params.require(:order).permit(:name, :date, :source, :total)
+    end
+
 end
